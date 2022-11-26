@@ -63,16 +63,16 @@ int main(int argc, char** argv) {
         double limit_diff = limit_max - limit_min;
         srand(time(NULL));
         double x1 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
-        srand(time(NULL));
-        double x2 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
-        srand(time(NULL));
+        double x2 = x1 + ((double)rand() / RAND_MAX) * (limit_max - x1);
         double x3 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
-        srand(time(NULL));
         double x4 = x3 + ((double)rand() / RAND_MAX) * (limit_max - x3);
         fprintf(input, "%lf %lf %lf %lf", x1, x2, x3, x4);
     }
     if (input) {
-        fscanf(input, "%lf %lf %lf %lf", &num1, &num2, &a, &b);
+        fscanf(input, "%lf", &num1);
+        fscanf(input, "%lf", &num2);
+        fscanf(input, "%lf", &a);
+        fscanf(input, "%lf", &b);
         fclose(input);
     } else {
         printf("Error! Try again, please.");
