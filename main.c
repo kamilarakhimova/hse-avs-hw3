@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
         double limit_diff = limit_max - limit_min;
         srand(time(NULL));
         double x1 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
-        double x2 = x1 + ((double)rand() / RAND_MAX) * (limit_max - x1);
+        double x2 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
         double x3 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
         double x4 = x3 + ((double)rand() / RAND_MAX) * (limit_max - x3);
         fprintf(input, "%lf %lf %lf %lf", x1, x2, x3, x4);
