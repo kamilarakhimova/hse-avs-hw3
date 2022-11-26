@@ -58,14 +58,18 @@ int main(int argc, char** argv) {
     double result;
     FILE* input = fopen(arg1, "rw+");
     if (strcmp(arg3, "generator") == 0) {
-        double limit_min = -100;                        // -100 can be replaced by a smaller number for a larger range
-        double limit_max = 100;                         // 100 can be replaced by a bigger number for a larger range
+        double limit_min = -10;                        // -10 can be replaced by a smaller number for a larger range
+        double limit_max = 10;                         // 10 can be replaced by a bigger number for a larger range
         double limit_diff = limit_max - limit_min;
         srand(time(NULL));
         double x1 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
+        x1 = round(x1 * 10000) / 10000;
         double x2 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
+        x2 = round(x1 * 10000) / 10000;
         double x3 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
+        x3 = round(x1 * 10000) / 10000;
         double x4 = x3 + ((double)rand() / RAND_MAX) * (limit_max - x3);
+        x4 = round(x4 * 10000) / 10000;
         fprintf(input, "%lf %lf %lf %lf", x1, x2, x3, x4);
     }
     if (input) {
