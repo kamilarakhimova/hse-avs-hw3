@@ -71,13 +71,19 @@ int main(int argc, char** argv) {
         double x4 = x3 + ((double)rand() / RAND_MAX) * (limit_max - x3);
         x4 = round(x4 * 10000) / 10000;
         fprintf(input, "%lf %lf %lf %lf", x1, x2, x3, x4);
+        num1 = x1;
+        num2 = x2;
+        a = x3;
+        b = x4;
     }
     if (input) {
-        fscanf(input, "%lf", &num1);
-        fscanf(input, "%lf", &num2);
-        fscanf(input, "%lf", &a);
-        fscanf(input, "%lf", &b);
-        fclose(input);
+        if (strcmp(arg3, "generator") != 0) {
+            fscanf(input, "%lf", &num1);
+            fscanf(input, "%lf", &num2);
+            fscanf(input, "%lf", &a);
+            fscanf(input, "%lf", &b);
+            fclose(input);
+        }
     } else {
         printf("Error! Try again, please.");
         return 1;
