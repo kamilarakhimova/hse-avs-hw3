@@ -79,19 +79,19 @@ int main(int argc, char** argv) {
         return 1;
     }
     ...
-    FILE* input = fopen(arg1, "rw+");   // opening file with input data
+    FILE* input = fopen(arg1, "rw+");   		// opening file with input data
     ...
-    if (input) {                        // correctness of opening the file
+    if (input) {                        		// correctness of opening the file
         ...
-        fclose (input);                 // closing input file
-    } else {                            // exit with error if we cannot open the file correctly
+        fclose (input);                 		// closing input file
+    } else {                            		// exit with error if we cannot open the file correctly
         printf("Error! Try again, please.");
         return 1;
     }
     ...
-    FILE* output = fopen(arg2, "w+");   // opening output file
-    fprintf(output, "%lf", result);      // output of the result to the output file
-    fclose(output);                     // closing file with output data
+    FILE* output = fopen(arg2, "w+");   		// opening output file
+    fprintf(output, "%lf", result);      		// output of the result to the output file
+    fclose(output);                     		// closing file with output data
 }
 ```
 >6. Использовать в разрабатываемых программах генератор случайных наборов данных, расширяющих возможности тестирования.
@@ -105,15 +105,23 @@ int main(int argc, char** argv) {
         arg3 = argv[3];      //"generator" or "input"
         srand(time(NULL));
     } else {                 // exit with error
+        printf("Error! Try again, please.");
         return 1;
     }
     ...
-    if (arg3 == "generator") {
-        int limit = rand();
-        for (int j = 0; j < limit; j++) {
-            srand(time(NULL));
-            fprintf(input, "%c", (0 + rand()%(127 + 1)));
-        }
+    if (strcmp(arg3, "generator") == 0) {
+        double limit_min = -100;                        // -100 can be replaced by a smaller number for a larger range
+        double limit_max = 100;                         // 100 can be replaced by a bigger number for a larger range
+        double limit_diff = limit_max - limit_min;
+        srand(time(NULL));
+        double x1 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
+        srand(time(NULL));
+        double x2 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
+        srand(time(NULL));
+        double x3 = limit_min + ((double)rand() / RAND_MAX) * limit_diff;
+        srand(time(NULL));
+        double x4 = x3 + ((double)rand() / RAND_MAX) * (limit_max - x3);
+        fprintf(input, "%lf %lf %lf %lf", x1, x2, x3, x4);
     }
 }
 ```
@@ -134,7 +142,7 @@ int main(int argc, char** argv) {
 }
 ```
 
-Таким образом, спустя всего 2 часа страданий, попыток понять, что именно работает неправильно, и осознания всей тленности бытия, код на C, наконец, заработал. Ура!
+Проверим, что код на C работает корректно. Так и есть, всё хорошо.
 
 Двигаемся дальше.
 
