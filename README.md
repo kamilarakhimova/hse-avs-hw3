@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
     ...
     if (input) {                        		// correctness of opening the file
         ...
-        fclose (input);                 		// closing input file
+        fclose(input);                 		// closing input file
     } else {                            		// exit with error if we cannot open the file correctly
         printf("Error! Try again, please.");
         return 1;
