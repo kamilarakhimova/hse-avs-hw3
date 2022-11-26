@@ -145,67 +145,67 @@ main:									# непосредственно функция main
 	test	rbp, rbp						# сравниваем rbp = input и 0
 	je	.L21							# если равны, то переходим на метку .L21
 .L26:
-	lea	rdx, 48[rsp]
-	lea	rsi, .LC9[rip]
-	mov	rdi, rbp
-	xor	eax, eax
-	call	__isoc99_fscanf@PLT
-	lea	rdx, 56[rsp]
-	mov	rdi, rbp
-	xor	eax, eax
-	lea	rsi, .LC9[rip]
-	call	__isoc99_fscanf@PLT
-	lea	rdx, 64[rsp]
-	mov	rdi, rbp
-	xor	eax, eax
-	lea	rsi, .LC9[rip]
-	call	__isoc99_fscanf@PLT
-	mov	rdi, rbp
-	lea	rdx, 72[rsp]
-	xor	eax, eax
-	lea	rsi, .LC9[rip]
-	call	__isoc99_fscanf@PLT
-	mov	rdi, rbp
-	call	fclose@PLT
+	lea	rdx, 48[rsp]						# rdx = 48[rsp] = &num1
+	lea	rsi, .LC9[rip]						# в rsi кладём значение .LC9[rip] = "%lf"
+	mov	rdi, rbp						# rdi = rbp = input
+	xor	eax, eax						# eax = 0
+	call	__isoc99_fscanf@PLT					# вызываем __isoc99_fscanf - из соображений безопасности вместо fscanf(input, "%lf", &num1)
+	lea	rdx, 56[rsp]						# rdx = 56[rsp] = &num2
+	mov	rdi, rbp						# rdi = rbp = input
+	xor	eax, eax						# eax = 0
+	lea	rsi, .LC9[rip]						# в rsi кладём значение .LC9[rip] = "%lf"
+	call	__isoc99_fscanf@PLT					# вызываем __isoc99_fscanf - из соображений безопасности вместо fscanf(input, "%lf", &num2)
+	lea	rdx, 64[rsp]						# rdx = 64[rsp] = &a
+	mov	rdi, rbp						# rdi = rbp = input
+	xor	eax, eax						# eax = 0
+	lea	rsi, .LC9[rip]						# в rsi кладём значение .LC9[rip] = "%lf"
+	call	__isoc99_fscanf@PLT					# вызываем __isoc99_fscanf - из соображений безопасности вместо fscanf(input, "%lf", &a)
+	mov	rdi, rbp						# rdi = rbp = input
+	lea	rdx, 72[rsp]						# rdx = 72[rsp] = &b
+	xor	eax, eax						# eax = 0
+	lea	rsi, .LC9[rip]						# в rsi кладём значение .LC9[rip] = "%lf"
+	call	__isoc99_fscanf@PLT					# вызываем __isoc99_fscanf - из соображений безопасности вместо fscanf(input, "%lf", &b)
+	mov	rdi, rbp						# rdi = rbp = input
+	call	fclose@PLT						# вызываем fclose(input)
 .L25:
-	lea	rsi, 80[rsp]
-	mov	edi, 1
-	call	clock_gettime@PLT
-	movsd	xmm4, QWORD PTR 56[rsp]
-	movsd	xmm3, QWORD PTR 48[rsp]
-	movsd	xmm2, QWORD PTR .LC10[rip]
-	movsd	xmm1, QWORD PTR 72[rsp]
-	mov	rdi, QWORD PTR f@GOTPCREL[rip]
-	movsd	xmm0, QWORD PTR 64[rsp]
-	call	integral@PLT
-	lea	rsi, 96[rsp]
-	mov	edi, 1
-	movsd	QWORD PTR 8[rsp], xmm0
-	call	clock_gettime@PLT
-	mov	rcx, QWORD PTR 88[rsp]
-	mov	rdx, QWORD PTR 80[rsp]
-	mov	rdi, QWORD PTR 96[rsp]
-	mov	rsi, QWORD PTR 104[rsp]
-	call	timespecDiff@PLT
-	lea	rsi, .LC11[rip]
-	mov	edi, 1
-	mov	rdx, rax
-	xor	eax, eax
-	call	__printf_chk@PLT
-	lea	rsi, .LC12[rip]
-	mov	rdi, r12
-	call	fopen@PLT
-	movsd	xmm0, QWORD PTR 8[rsp]
-	mov	esi, 1
-	lea	rdx, .LC9[rip]
-	mov	rdi, rax
-	mov	rbp, rax
-	mov	eax, 1
-	call	__fprintf_chk@PLT
-	mov	rdi, rbp
-	call	fclose@PLT
-	xor	eax, eax
-	jmp	.L20
+	lea	rsi, 80[rsp]						# rsi = 80[rsp] = &start
+	mov	edi, 1							# edi = 1 = CLOCK_MONOTONIC
+	call	clock_gettime@PLT					# вызываем clock_gettime(CLOCK_MONOTONIC, &start)
+	movsd	xmm4, QWORD PTR 56[rsp]					# xmm4 = QWORD PTR 56[rsp] = num2
+	movsd	xmm3, QWORD PTR 48[rsp]					# xmm3 = QWORD PTR 48[rsp] = num1
+	movsd	xmm2, QWORD PTR .LC10[rip]				# xmm2 = QWORD PTR .LC10[rip] = eps = 0.0001
+	movsd	xmm1, QWORD PTR 72[rsp]					# xmm1 = QWORD PTR 72[rsp] = b
+	mov	rdi, QWORD PTR f@GOTPCREL[rip]				# rdi = f
+	movsd	xmm0, QWORD PTR 64[rsp]					# xmm0 = QWORD PTR 64[rsp] = a
+	call	integral@PLT						# вызываем integral(f, a, b, eps, num1, num2)
+	lea	rsi, 96[rsp]						# rsi = 96[rsp] = &end
+	mov	edi, 1							# edi = 1 = CLOCK_MONOTONIC
+	movsd	QWORD PTR 8[rsp], xmm0					# result = QWORD PTR 8[rsp] = xmm0 = получаемое от integral(f, a, b, eps, num1, num2) значение
+	call	clock_gettime@PLT					# вызываем clock_gettime(CLOCK_MONOTONIC, &end)
+	mov	rcx, QWORD PTR 88[rsp]					# / rdx:rcx = start
+	mov	rdx, QWORD PTR 80[rsp]					# \
+	mov	rdi, QWORD PTR 96[rsp]					# / rdi:rsi = end
+	mov	rsi, QWORD PTR 104[rsp]					# \
+	call	timespecDiff@PLT					# вызываем timespecDiff(end, start)
+	lea	rsi, .LC11[rip]						# rsi = "Elapsed: %ld ns"
+	mov	edi, 1							# edi = 1
+	mov	rdx, rax						# rdx = rax = elapsed_ns = получаемое от timespecDiff(end, start) значение
+	xor	eax, eax						# eax = 0
+	call	__printf_chk@PLT					# вызываем __printf_chk - из соображений безопасности вместо printf("Elapsed: %ld ns", elapsed_ns)
+	lea	rsi, .LC12[rip]						# rsi = "w+"
+	mov	rdi, r12						# rdi = r12 = arg2
+	call	fopen@PLT						# вызываем fopen(arg2, "w+")
+	movsd	xmm0, QWORD PTR 8[rsp]					# xmm0 = QWORD PTR 8[rsp] = result
+	mov	esi, 1							# esi = 1
+	lea	rdx, .LC9[rip]						# rdx = "%lf"
+	mov	rdi, rax						# rdi = output = fopen(arg2, "w+")
+	mov	rbp, rax						# rbp = output = fopen(arg2, "w+")
+	mov	eax, 1							# eax = 1
+	call	__fprintf_chk@PLT					# вызываем __fprintf_chk - из соображений безопасности вместо fprintf(output, "%lf", result)
+	mov	rdi, rbp						# rdi = rbp = output
+	call	fclose@PLT						# вызываем fclose(output)
+	xor	eax, eax						# eax = 0
+	jmp	.L20							# переходим (прыгаем) на метку .L20
 .L21:
 	lea	rsi, .LC5[rip]
 	mov	edi, 1
@@ -292,5 +292,5 @@ main:									# непосредственно функция main
 	.long	0
 	.long	1076101120
 .LC10:
-	.long	-350469331
+	.long	-350469331						# eps for main
 	.long	1058682594
