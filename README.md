@@ -220,10 +220,10 @@ gcc ./main.o ./timediff.o -o foo.exe
 
 gcc ./main.c -S -o main.s
 gcc ./timediff.c -S -o timediff.s
-gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables \
->     -fno-stack-protector -fno-exceptions -O0 -O1 -O2 -O3 ./main.c -S -o ./main.s
-gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables \
->     -fno-stack-protector -fno-exceptions -O0 -O1 -O2 -O3 ./timediff.c -S -o ./timediff.s
+gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables
+     -fno-stack-protector -fno-exceptions -O0 -O1 -O2 -O3 ./main.c -S -o ./main.s
+gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables
+     -fno-stack-protector -fno-exceptions -O0 -O1 -O2 -O3 ./timediff.c -S -o ./timediff.s
 gcc ./main.s -c -o main.o
 gcc ./timediff.s -c -o ./timediff.o
 gcc ./main.o ./timediff.o -o foo.exe
@@ -235,11 +235,11 @@ gcc ./main.o ./timediff.o -o foo.exe
 //Результаты по производительности:
 
 ./foo.exe input1.txt output.txt input
-Elapsed: 140 ns
+Elapsed: 5255880537 ns
 ./foo.exe input2.txt output.txt input
-Elapsed: 260 ns
+Elapsed: 603544651 ns
 ./foo.exe input3.txt output.txt input
-Elapsed: 390 ns
+Elapsed: 19160 ns
 ```
 >18. Аналогично, используя опции оптимизации по размеру, сформировать код на ассемблере. Провести сравнительный анализ с неоптимизированной программой по размеру ассемблерного кода, размеру исполняемого файла и производительности. Сопоставить эти программы с собственной программой, разработанной на ассемблере, в которой вместо переменных максимально возможно используются регистры.
 ```
@@ -247,26 +247,26 @@ Elapsed: 390 ns
 
 gcc ./main.c -S -o main.s
 gcc ./timediff.c -S -o timediff.s
-gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables \
->     -fno-stack-protector -fno-exceptions -Os ./main.c -S -o ./main.s
-gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables \
->     -fno-stack-protector -fno-exceptions -Os ./timediff.c -S -o ./timediff.s
+gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables
+     -fno-stack-protector -fno-exceptions -Os ./main.c -S -o ./main.s
+gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables
+     -fno-stack-protector -fno-exceptions -Os ./timediff.c -S -o ./timediff.s
 gcc ./main.s -c -o main.o
 gcc ./timediff.s -c -o ./timediff.o
 gcc ./main.o ./timediff.o -o foo.exe
 
-//Результаты по размеру ассемблерного кода: код с оптимизациями по размеру меньше, чем код с оптимизациями по скорости, но всё ещё больше кода с собственной программой
+//Результаты по размеру ассемблерного кода: код с оптимизациями по размеру меньше, чем код с оптимизациями по скорости и меньше, чем код с собственной программой
 
 //Результаты по размеру исполняемого файла: размер исполняемого файла уменьшился
 
 //Результаты по производительности:
 
 ./foo.exe input1.txt output.txt input
-Elapsed: 90 ns
+Elapsed: 5774322286 ns
 ./foo.exe input2.txt output.txt input
-Elapsed: 180 ns
+Elapsed: 668509785 ns
 ./foo.exe input3.txt output.txt input
-Elapsed: 500 ns
+Elapsed: 19180 ns
 ```
 
 в) Также необходимо было привести полное тестовое покрытие: (спойлер: тестирование обеих программ прошло успешнo)
