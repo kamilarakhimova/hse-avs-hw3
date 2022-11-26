@@ -123,27 +123,27 @@ main:									# непосредственно функция main
 	push	r13
 	push	r12
 	push	rbp
-	sub	rsp, 112
-	cmp	edi, 4
-	jne	.L21
-	xor	edi, edi
-	mov	rbp, QWORD PTR 8[rsi]
-	mov	r13, QWORD PTR 24[rsi]
-	mov	r12, QWORD PTR 16[rsi]
-	call	time@PLT
-	mov	rdi, rax
-	call	srand@PLT
-	mov	rdi, rbp
-	lea	rsi, .LC3[rip]
-	call	fopen@PLT
-	lea	rsi, .LC4[rip]
-	mov	rdi, r13
-	mov	rbp, rax
-	call	strcmp@PLT
-	test	eax, eax
-	je	.L32
-	test	rbp, rbp
-	je	.L21
+	sub	rsp, 112						# одалживаем у стека пространство в 112 байт
+	cmp	edi, 4							# сравниваем edi и 4 <=> argc и 4
+	jne	.L21							# если не равны, то переходим на .L21
+	xor	edi, edi						# edi = 0
+	mov	rbp, QWORD PTR 8[rsi]					# rbp = arg1
+	mov	r13, QWORD PTR 24[rsi]					# r13 = arg3
+	mov	r12, QWORD PTR 16[rsi]					# r12 = arg2
+	call	time@PLT						# вызываем time(NULL)
+	mov	rdi, rax						# получаемое от time(NULL) значение кладём в rdi
+	call	srand@PLT						# вызываем srand() c аргументом time(NULL)
+	mov	rdi, rbp						# в rdi кладём значение rbp = arg1
+	lea	rsi, .LC3[rip]						# в rsi кладём значение .LC3[rip] = "rw+"
+	call	fopen@PLT						# вызываем fopen(arg1, "rw+")
+	lea	rsi, .LC4[rip]						# в rsi кладём значение .LC4[rip] = "generator"
+	mov	rdi, r13						# rdi = r13 = arg3
+	mov	rbp, rax						# получаемое от fopen(arg1, "rw+") значение кладём в rbp = input
+	call	strcmp@PLT						# вызываем strcmp(arg3, "generator")
+	test	eax, eax						# сравниваем eax = strcmp(arg3, "generator") и 0
+	je	.L32							# если равны, то переходим на метку .L32
+	test	rbp, rbp						# сравниваем rbp = input и 0
+	je	.L21							# если равны, то переходим на метку .L21
 .L26:
 	lea	rdx, 48[rsp]
 	lea	rsi, .LC9[rip]
