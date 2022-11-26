@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
     }
     if (input) {
         fscanf(input, "%lf %lf %lf %lf", &num1, &num2, &a, &b);
-        fclose (input);
+        fclose(input);
     } else {
         printf("Error! Try again, please.");
         return 1;
