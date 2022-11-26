@@ -183,6 +183,12 @@ gcc ./main.o ./timediff.o -o foo.exe
 	.align 8
 	.section	.rodata.cst16,"aM",@progbits,16
 	.section	.rodata.cst8
+	.size	f, .-f
+	.p2align 4,,10
+	.p2align 3
+	.size	integral, .-integral
+	.section	.rodata.str1.1,"aMS",@progbits,1
+	.section	.text.startup,"ax",@progbits
 ```
 >11. Модифицированная ассемблерная программа отдельно откомпилирована и скомпонована без использования опций отладки.
 ```
