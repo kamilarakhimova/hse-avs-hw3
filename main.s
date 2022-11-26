@@ -225,72 +225,72 @@ main:									# непосредственно функция main
 	call	srand@PLT						# вызываем srand(time(NULL))
 	call	rand@PLT						# вызываем rand()
 	pxor	xmm0, xmm0						# xmm0 = 0
-	cvtsi2sd	xmm0, eax
-	divsd	xmm0, QWORD PTR .LC6[rip]
-	mulsd	xmm0, QWORD PTR .LC1[rip]
-	subsd	xmm0, QWORD PTR .LC7[rip]
-	movsd	QWORD PTR 8[rsp], xmm0
-	call	rand@PLT
-	pxor	xmm1, xmm1
-	cvtsi2sd	xmm1, eax
-	divsd	xmm1, QWORD PTR .LC6[rip]
-	mulsd	xmm1, QWORD PTR .LC1[rip]
-	subsd	xmm1, QWORD PTR .LC7[rip]
-	movsd	QWORD PTR 40[rsp], xmm1
-	call	rand@PLT
-	pxor	xmm2, xmm2
-	cvtsi2sd	xmm2, eax
-	divsd	xmm2, QWORD PTR .LC6[rip]
-	mulsd	xmm2, QWORD PTR .LC1[rip]
-	subsd	xmm2, QWORD PTR .LC7[rip]
-	movsd	QWORD PTR 16[rsp], xmm2
-	call	rand@PLT
-	movsd	xmm2, QWORD PTR 16[rsp]
-	pxor	xmm3, xmm3
-	movsd	xmm5, QWORD PTR .LC7[rip]
-	cvtsi2sd	xmm3, eax
-	divsd	xmm3, QWORD PTR .LC6[rip]
-	movsd	xmm1, QWORD PTR 40[rsp]
-	mov	rdi, rbp
-	subsd	xmm5, xmm2
-	movsd	xmm0, QWORD PTR 8[rsp]
-	mov	esi, 1
-	lea	rdx, .LC8[rip]
-	mov	eax, 4
-	movsd	QWORD PTR 24[rsp], xmm2
-	movsd	QWORD PTR 16[rsp], xmm1
-	mulsd	xmm3, xmm5
-	addsd	xmm3, xmm2
-	movsd	QWORD PTR 32[rsp], xmm3
-	call	__fprintf_chk@PLT
-	movsd	xmm6, QWORD PTR 8[rsp]
-	mov	rdi, r13
-	movsd	xmm1, QWORD PTR 16[rsp]
-	movsd	xmm2, QWORD PTR 24[rsp]
-	movsd	xmm3, QWORD PTR 32[rsp]
-	lea	rsi, .LC4[rip]
-	movsd	QWORD PTR 48[rsp], xmm6
-	movsd	QWORD PTR 56[rsp], xmm1
-	movsd	QWORD PTR 64[rsp], xmm2
-	movsd	QWORD PTR 72[rsp], xmm3
-	call	strcmp@PLT
-	test	eax, eax
-	je	.L25
-	jmp	.L26
-.LC1:
-	.long	0							# n for function integral
+	cvtsi2sd	xmm0, eax					# xmm0 = (double)rand()
+	divsd	xmm0, QWORD PTR .LC6[rip]				# xmm0 = (double)rand() / RAND_MAX
+	mulsd	xmm0, QWORD PTR .LC1[rip]				# xmm0 = ((double)rand() / RAND_MAX) * limit_diff
+	subsd	xmm0, QWORD PTR .LC7[rip]				# xmm0 = limit_min + ((double)rand() / RAND_MAX) * limit_diff
+	movsd	QWORD PTR 8[rsp], xmm0					# QWORD PTR 8[rsp] = double x1 = limit_min + ((double)rand() / RAND_MAX) * limit_diff
+	call	rand@PLT						# вызываем rand()
+	pxor	xmm1, xmm1						# xmm1 = 0
+	cvtsi2sd	xmm1, eax					# xmm1 = (double)rand()
+	divsd	xmm1, QWORD PTR .LC6[rip]				# xmm1 = (double)rand() / RAND_MAX
+	mulsd	xmm1, QWORD PTR .LC1[rip]				# xmm1 = ((double)rand() / RAND_MAX) * limit_diff
+	subsd	xmm1, QWORD PTR .LC7[rip]				# xmm1 = limit_min + ((double)rand() / RAND_MAX) * limit_diff
+	movsd	QWORD PTR 40[rsp], xmm1					# QWORD PTR 40[rsp] = double x2 = limit_min + ((double)rand() / RAND_MAX) * limit_diff
+	call	rand@PLT						# вызываем rand()
+	pxor	xmm2, xmm2						# xmm2 = 0
+	cvtsi2sd	xmm2, eax					# xmm2 = (double)rand()
+	divsd	xmm2, QWORD PTR .LC6[rip]				# xmm2 = (double)rand() / RAND_MAX
+	mulsd	xmm2, QWORD PTR .LC1[rip]				# xmm2 = ((double)rand() / RAND_MAX) * limit_diff
+	subsd	xmm2, QWORD PTR .LC7[rip]				# xmm2 = limit_min + ((double)rand() / RAND_MAX) * limit_diff
+	movsd	QWORD PTR 16[rsp], xmm2					# QWORD PTR 16[rsp] = double x3 = limit_min + ((double)rand() / RAND_MAX) * limit_diff
+	call	rand@PLT						# вызываем rand()
+	movsd	xmm2, QWORD PTR 16[rsp]					# xmm2 = QWORD PTR 16[rsp] = x3
+	pxor	xmm3, xmm3						# xmm3 = 0
+	movsd	xmm5, QWORD PTR .LC7[rip]				# xmm5 = limit_max
+	cvtsi2sd	xmm3, eax					# xmm3 = (double)rand()
+	divsd	xmm3, QWORD PTR .LC6[rip]				# xmm3 = (double)rand() / RAND_MAX
+	movsd	xmm1, QWORD PTR 40[rsp]					# xmm1 = QWORD PTR 40[rsp] = x2
+	mov	rdi, rbp						# rdi = rbp = input
+	subsd	xmm5, xmm2						# xmm5 = xmm5 - xmm2 = limit_max - x3
+	movsd	xmm0, QWORD PTR 8[rsp]					# xmm0 = arg1
+	mov	esi, 1							# esi = 1
+	lea	rdx, .LC8[rip]						# rdx = "%lf %lf %lf %lf"
+	mov	eax, 4							# eax = 4
+	movsd	QWORD PTR 24[rsp], xmm2					# a = QWORD PTR 24[rsp] = xmm2 = x3
+	movsd	QWORD PTR 16[rsp], xmm1					# num2 = QWORD PTR 16[rsp] = xmm1 = x2
+	mulsd	xmm3, xmm5						# xmm3 = xmm3 * xmm5 = ((double)rand() / RAND_MAX) * (limit_max - x3)
+	addsd	xmm3, xmm2						# xmm3 = x3 + ((double)rand() / RAND_MAX) * (limit_max - x3)
+	movsd	QWORD PTR 32[rsp], xmm3					# QWORD PTR 32[rsp] = double x4 = x3 + ((double)rand() / RAND_MAX) * (limit_max - x3)
+	call	__fprintf_chk@PLT					# вызываем __fprintf_chk - из соображений безопасности вместо fprintf(input, "%lf %lf %lf %lf", x1, x2, x3, x4)
+	movsd	xmm6, QWORD PTR 8[rsp]					# xmm6 = QWORD PTR 8[rsp] = num1
+	mov	rdi, r13						# rdi = r13 = arg3
+	movsd	xmm1, QWORD PTR 16[rsp]					# xmm1 = QWORD PTR 16[rsp] = num2
+	movsd	xmm2, QWORD PTR 24[rsp]					# xmm2 = QWORD PTR 24[rsp] = a
+	movsd	xmm3, QWORD PTR 32[rsp]					# xmm3 = QWORD PTR 32[rsp] = b
+	lea	rsi, .LC4[rip]						# rsi = "generator"
+	movsd	QWORD PTR 48[rsp], xmm6					# QWORD PTR 48[rsp] = xmm6 = num1
+	movsd	QWORD PTR 56[rsp], xmm1					# QWORD PTR 56[rsp] = xmm1 = num2
+	movsd	QWORD PTR 64[rsp], xmm2					# QWORD PTR 64[rsp] = xmm2 = a
+	movsd	QWORD PTR 72[rsp], xmm3					# QWORD PTR 72[rsp] = xmm3 = b
+	call	strcmp@PLT						# вызываем strcmp(arg3, "generator")
+	test	eax, eax						# сравниваем eax = strcmp(arg3, "generator") и 0 <=> if (strcmp(arg3, "generator") != 0)
+	je	.L25							# если равны, то переходим на .L25
+	jmp	.L26							# переходим (прыгаем) на метку .L26
+.LC1:									# limit_diff = limit_max - limit_min
+	.long	0
 	.long	1077149696
 .LC2:
 	.long	-1
 	.long	2147483647
 	.long	0
 	.long	0
-.LC6:
+.LC6:									# RAND_MAX
 	.long	-4194304
 	.long	1105199103
-.LC7:
+.LC7:									# limit_max = -limit_min
 	.long	0
 	.long	1076101120
 .LC10:
-	.long	-350469331						# eps for main
+	.long	-350469331						# eps
 	.long	1058682594
