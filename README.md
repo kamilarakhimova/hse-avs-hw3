@@ -69,12 +69,13 @@ int64_t timespecDiff(struct timespec timeA, struct timespec timeB) {
 
 int main(int argc, char** argv) {
     ...
-    if (argc == 4) {                    // correctness of the numbers of arguments
+    if (argc == 4) {					// correctness of the numbers of arguments
         arg1 = argv[1];
         arg2 = argv[2];
-        arg3 = argv[3];                 //"generator" or "input"
+        arg3 = argv[3];                                 //"generator" or "input"
         srand(time(NULL));
-    } else {                            // exit with error
+    } else {                                            // exit with error
+        printf("Error! Try again, please.");
         return 1;
     }
     ...
@@ -83,10 +84,13 @@ int main(int argc, char** argv) {
     if (input) {                        // correctness of opening the file
         ...
         fclose (input);                 // closing input file
+    } else {                            // exit with error if we cannot open the file correctly
+        printf("Error! Try again, please.");
+        return 1;
     }
     ...
     FILE* output = fopen(arg2, "w+");   // opening output file
-    fprintf(output, "%d", result);      // output of the result to the output file
+    fprintf(output, "%lf", result);      // output of the result to the output file
     fclose(output);                     // closing file with output data
 }
 ```
