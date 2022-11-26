@@ -74,10 +74,8 @@ int main(int argc, char** argv) {
         fscanf(input, "%lf %lf %lf %lf", &num1, &num2, &a, &b);
         fclose (input);
     } else {
-        if ((arg3 != "generator" && arg3 != "input")) {
-            printf("Error! Try again, please.");
-            return 1;
-        }
+        printf("Error! Try again, please.");
+        return 1;
     }
 
     clock_gettime(CLOCK_MONOTONIC, &start);
