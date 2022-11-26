@@ -178,7 +178,11 @@ gcc ./main.o ./timediff.o -o foo.exe
 	.size	timespecDiff, .-timespecDiff
 	.ident	"GCC: (GNU) 10.3.0"
 	.section	.note.GNU-stack,"",@progbits
-
+	.size	main, .-main
+	.section	.rodata.cst8,"aM",@progbits,8
+	.align 8
+	.section	.rodata.cst16,"aM",@progbits,16
+	.section	.rodata.cst8
 ```
 >11. Модифицированная ассемблерная программа отдельно откомпилирована и скомпонована без использования опций отладки.
 ```
