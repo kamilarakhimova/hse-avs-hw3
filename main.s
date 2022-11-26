@@ -207,24 +207,24 @@ main:									# непосредственно функция main
 	xor	eax, eax						# eax = 0
 	jmp	.L20							# переходим (прыгаем) на метку .L20
 .L21:
-	lea	rsi, .LC5[rip]
-	mov	edi, 1
-	xor	eax, eax
-	call	__printf_chk@PLT
-	mov	eax, 1
+	lea	rsi, .LC5[rip]						# rsi = "Error! Try again, please."
+	mov	edi, 1							# edi = 1
+	xor	eax, eax						# eax = 0
+	call	__printf_chk@PLT					# вызываем __printf_chk - из соображений безопасности вместо printf("Error! Try again, please.")
+	mov	eax, 1							# eax = 1
 .L20:
-	add	rsp, 112
+	add	rsp, 112						# возвращаем стеку его 112 байт
 	pop	rbp
 	pop	r12
 	pop	r13
-	ret
+	ret								# выходим из функции main
 .L32:
-	xor	edi, edi
-	call	time@PLT
-	mov	rdi, rax
-	call	srand@PLT
-	call	rand@PLT
-	pxor	xmm0, xmm0
+	xor	edi, edi						# edi = 0
+	call	time@PLT						# вызываем time(NULL)
+	mov	rdi, rax						# rdi = rax = time(NULL)
+	call	srand@PLT						# вызываем srand(time(NULL))
+	call	rand@PLT						# вызываем rand()
+	pxor	xmm0, xmm0						# xmm0 = 0
 	cvtsi2sd	xmm0, eax
 	divsd	xmm0, QWORD PTR .LC6[rip]
 	mulsd	xmm0, QWORD PTR .LC1[rip]
