@@ -32,7 +32,7 @@ integral:								# непосредственно функция integral
 	movsd	QWORD PTR 32[rsp], xmm4					# QWORD PTR 32[rsp] = n2
 	movsd	QWORD PTR 40[rsp], xmm1					# QWORD PTR 40[rsp] = h
 .L4:
-	pxor	xmm0, xmm0						# xmm0 = 0
+	pxor	xmm0, xmm0
 	cvtsi2sd	xmm0, ebp					# xmm0 = i - 1
 	mulsd	xmm0, QWORD PTR 40[rsp]					# xmm0 = xmm0 * h = (i - 1) * h
 	add	ebp, 1							# ebp = ebp + 1 = i + 1
@@ -44,10 +44,10 @@ integral:								# непосредственно функция integral
 	movsd	QWORD PTR 8[rsp], xmm0					# I2n = xmm0 = I2n + n1 + n2 * f(a + (i - 1) * h)
 	cmp	ebp, 19							# сравниваем ebp и 19 <=> сравниваем i и 19
 	jne	.L4							# если не равны, то переходим на .L4
-	movsd	xmm4, QWORD PTR 40[rsp]
-	mov	r12d, 20
-	mulsd	xmm4, xmm0
-	pxor	xmm0, xmm0
+	movsd	xmm4, QWORD PTR 40[rsp]					# xmm4 = h
+	mov	r12d, 20						# r12d = 20 = n
+	mulsd	xmm4, xmm0						# xmm4 = xmm4 * xmm0 = h * I2n
+	pxor	xmm0, xmm0						
 	subsd	xmm0, xmm4
 	andpd	xmm0, XMMWORD PTR .LC2[rip]
 	movsd	QWORD PTR 48[rsp], xmm4
