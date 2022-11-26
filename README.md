@@ -83,7 +83,6 @@ int main(int argc, char** argv) {
     ...
     if (input) {                        		// correctness of opening the file
         ...
-        fclose(input);                 		// closing input file
     } else {                            		// exit with error if we cannot open the file correctly
         printf("Error! Try again, please.");
         return 1;
@@ -123,6 +122,7 @@ int main(int argc, char** argv) {
         double x4 = x3 + ((double)rand() / RAND_MAX) * (limit_max - x3);
         x4 = round(x4 * 10000) / 10000;
         fprintf(input, "%lf %lf %lf %lf", x1, x2, x3, x4);
+	...
     }
 }
 ```
