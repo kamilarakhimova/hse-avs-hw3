@@ -1,49 +1,49 @@
-# Параметры в функции передаются в регистрах rdi, rsi, rdx, rcx, r8, r9, 
-# а возвращаемое значение передаётся в регистре rax (и в регистре rdx, если оно занимает более 64 байт)
+# Целочисленные параметры в функции передаются в регистрах rdi, rsi, rdx, rcx, r8, r9, 
+# а возвращаемое целочисленное значение передаётся в регистре rax (и в регистре rdx, если оно занимает более 64 байт)
 
-	.file	"main.c"
-	.intel_syntax noprefix
+	.file	"main.c"						# имя файла, который компилировался
+	.intel_syntax noprefix						# использование синтаксиса в стиле Intel
 	.text
-	.globl	f
-	.type	f, @function
-f:
-	movapd	xmm1, xmm0
-	mulsd	xmm0, xmm0
-	mulsd	xmm0, xmm1
-	ret
-	.globl	integral
-	.type	integral, @function
-integral:
+	.globl	f							# объявление и экспортирование вовне символа f
+	.type	f, @function						# отмечаем, что f -- это функция
+f:									# непосредственно функция f
+	movapd	xmm1, xmm0						# xmm1 = xmm0 = x, выполняется процессором x86
+	mulsd	xmm0, xmm0						# xmm0 = xmm0 * xmm0 = x * x
+	mulsd	xmm0, xmm1						# xmm0 = xmm0 * xmm1 = x * x * x
+	ret								# выход из функции, возвращаем значение в xmm0 = x * x * x
+	.globl	integral						# объявление и экспортирование вовне символа integral
+	.type	integral, @function					# отмечаем, что integral -- это функция
+integral:								# непосредственно функция integral
 	push	r14
-	subsd	xmm1, xmm0
+	subsd	xmm1, xmm0						# xmm1 = xmm1 - xmm0 = b - a
 	push	r13
 	push	r12
 	push	rbp
-	movq	r14, xmm1
-	mov	ebp, -1
+	movq	r14, xmm1						# r14 = xmm1 = b - a
+	mov	ebp, -1							# ebp = -1 = i
 	push	rbx
-	mov	rbx, rdi
-	sub	rsp, 64
-	divsd	xmm1, QWORD PTR .LC1[rip]
-	mov	QWORD PTR 8[rsp], 0x000000000
-	movsd	QWORD PTR 16[rsp], xmm0
-	movsd	QWORD PTR 56[rsp], xmm2
-	movsd	QWORD PTR 24[rsp], xmm3
-	movsd	QWORD PTR 32[rsp], xmm4
-	movsd	QWORD PTR 40[rsp], xmm1
+	mov	rbx, rdi						# rbx = rdi = f
+	sub	rsp, 64							# rsp -= 64
+	divsd	xmm1, QWORD PTR .LC1[rip]				# xmm1 = xmm1 / n = (b - a) / n = h
+	mov	QWORD PTR 8[rsp], 0x000000000				# QWORD PTR 8[rsp] = I2n
+	movsd	QWORD PTR 16[rsp], xmm0					# QWORD PTR 16[rsp] = a
+	movsd	QWORD PTR 56[rsp], xmm2					# QWORD PTR 56[rsp] = error
+	movsd	QWORD PTR 24[rsp], xmm3					# QWORD PTR 24[rsp] = n1
+	movsd	QWORD PTR 32[rsp], xmm4					# QWORD PTR 32[rsp] = n2
+	movsd	QWORD PTR 40[rsp], xmm1					# QWORD PTR 40[rsp] = h
 .L4:
-	pxor	xmm0, xmm0
-	cvtsi2sd	xmm0, ebp
-	mulsd	xmm0, QWORD PTR 40[rsp]
-	add	ebp, 1
-	addsd	xmm0, QWORD PTR 16[rsp]
-	call	rbx
-	mulsd	xmm0, QWORD PTR 32[rsp]
-	addsd	xmm0, QWORD PTR 24[rsp]
-	addsd	xmm0, QWORD PTR 8[rsp]
-	movsd	QWORD PTR 8[rsp], xmm0
-	cmp	ebp, 19
-	jne	.L4
+	pxor	xmm0, xmm0						# xmm0 = 0
+	cvtsi2sd	xmm0, ebp					# xmm0 = i - 1
+	mulsd	xmm0, QWORD PTR 40[rsp]					# xmm0 = xmm0 * h = (i - 1) * h
+	add	ebp, 1							# ebp = ebp + 1 = i + 1
+	addsd	xmm0, QWORD PTR 16[rsp]					# xmm0 = xmm0 + a = a + (i - 1) * h
+	call	rbx							# вызываем rbx = f
+	mulsd	xmm0, QWORD PTR 32[rsp]					# xmm0 = n2 * xmm0 = n2 * f(a + (i - 1) * h)
+	addsd	xmm0, QWORD PTR 24[rsp]					# xmm0 = n1 + xmm0 = n1 + n2 * f(a + (i - 1) * h)
+	addsd	xmm0, QWORD PTR 8[rsp]					# xmm0 = xmm0 + I2n = I2n + n1 + n2 * f(a + (i - 1) * h)
+	movsd	QWORD PTR 8[rsp], xmm0					# I2n = xmm0 = I2n + n1 + n2 * f(a + (i - 1) * h)
+	cmp	ebp, 19							# сравниваем ebp и 19 <=> сравниваем i и 19
+	jne	.L4							# если не равны, то переходим на .L4
 	movsd	xmm4, QWORD PTR 40[rsp]
 	mov	r12d, 20
 	mulsd	xmm4, xmm0
@@ -116,9 +116,9 @@ integral:
 	.string	"Elapsed: %ld ns"
 .LC12:
 	.string	"w+"
-	.globl	main
-	.type	main, @function
-main:
+	.globl	main							# объявление и экспортирование вовне символа main
+	.type	main, @function						# отмечаем, что main -- это функция
+main:									# непосредственно функция main
 	push	r13
 	push	r12
 	push	rbp
@@ -277,7 +277,7 @@ main:
 	je	.L25
 	jmp	.L26
 .LC1:
-	.long	0
+	.long	0							# n for function integral
 	.long	1077149696
 .LC2:
 	.long	-1
