@@ -47,12 +47,12 @@ integral:								# непосредственно функция integral
 	movsd	xmm4, QWORD PTR 40[rsp]					# xmm4 = h
 	mov	r12d, 20						# r12d = 20 = n
 	mulsd	xmm4, xmm0						# xmm4 = xmm4 * xmm0 = h * I2n
-	pxor	xmm0, xmm0						
-	subsd	xmm0, xmm4
+	pxor	xmm0, xmm0
+	subsd	xmm0, xmm4						# xmm0 = xmm0 - xmm4 = xmm0 - I2n * h
 	andpd	xmm0, XMMWORD PTR .LC2[rip]
-	movsd	QWORD PTR 48[rsp], xmm4
-	comisd	xmm0, QWORD PTR 56[rsp]
-	jb	.L19
+	movsd	QWORD PTR 48[rsp], xmm4					# In = xmm4 = I2n
+	comisd	xmm0, QWORD PTR 56[rsp]					# сравниваем xmm0 и error <=> сравниваем (In - I2n) и error
+	jb	.L19							# если меньше, то переходим на .L19
 .L9:
 	add	r12d, r12d
 	pxor	xmm0, xmm0
