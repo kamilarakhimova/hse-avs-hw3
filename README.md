@@ -152,12 +152,12 @@ int main(int argc, char** argv) {
 //Благодаря описанным ниже действиям в терминале были получены две программы на ассемблере: "main.o" и "timediff.o", затем была проведена их линковка и получен файл "foo.exe"
 
 gcc ./main.c -S -o main.s
-gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables \
->     -fno-stack-protector -fno-exceptions ./main.c -S -o ./main.s
+gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables
+     -fno-stack-protector -fno-exceptions ./main.c -S -o ./main.s
 gcc ./main.s -c -o main.o
 gcc ./timediff.c -S -o timediff.s
-gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables \
->     -fno-stack-protector -fno-exceptions ./timediff.c -S -o ./timediff.s
+gcc -masm=intel -fno-asynchronous-unwind-tables -fno-jump-tables
+     -fno-stack-protector -fno-exceptions ./timediff.c -S -o ./timediff.s
 gcc ./timediff.s -c -o ./timediff.o
 gcc ./main.o ./timediff.o -o foo.exe
 ```
